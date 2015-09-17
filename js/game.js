@@ -47,10 +47,12 @@ $(window).bind("load", function() {
     update();
     draw();
 
-    framesThisSecond++;
-    // https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
-    // Good explanation http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
-    requestAnimationFrame(mainLoop);
+    setTimeout(function(){
+      framesThisSecond++;
+      // https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
+      // Good explanation http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+      requestAnimationFrame(mainLoop);
+    }, 1000/40);
   }
 
   // Handles user input
@@ -107,7 +109,7 @@ $(window).bind("load", function() {
     }
     if (ball.y < 0){
      ball.y = 0;
-     ball.velocity_x *= -1;
+     ball.velocity_y *= -1;
     }
   }
 
