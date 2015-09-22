@@ -5,10 +5,3 @@ canvas {
   left: 50%;
   transform: translate(-50%, -50%); /* since the top, left is for upper left corner of canvas */
 }
-
-#controls {
-  border-radius: 2px;
-  background-color: #DCDADA;
-  float: left;
-  padding: 15px;
-}
