@@ -78,6 +78,10 @@ $(window).bind("load", function() {
     // *note* in a death spiral the delta will grow larger and larger,
     // meaning that the while loop will run longer and longer
     while (delta >= timestep) {
+        // By decreasing delta each step we are tricking our "compensation" for
+        // differences in loop time into effectively slowing down time.
+        console.log(timestep / slowMoLevel);
+
         update(timestep / slowMoLevel);
         delta -= timestep;
         // Prevent the "spiral of death" in which
@@ -87,7 +91,6 @@ $(window).bind("load", function() {
             // goin down, we need to just get the game back on track.
             // Determinism SHMEterminism.
             delta = 0;
-            console.log("dsads");
             break;
         }
     }
