@@ -50,7 +50,7 @@ $(window).bind("load", function() {
 
   var fps = 0,
       framesThisSecond = 0,
-      timestep = 60; // update loop occurs 60 times per sec
+      timestep = 1000 / 60; // update loop occurs 60 times per sec
 
   setInterval(function(){ fps = framesThisSecond; framesThisSecond = 0; }, 1000);
 
@@ -61,24 +61,38 @@ $(window).bind("load", function() {
 
   //Game Loop
   function mainLoop(timestamp) {
+    // This animation is only capped for demonstration purposes.  If our game
+    // didn't need a way of explicitly capping framerates, (which it shouldn't),
+    // Then requestAnimationFrame would be able to run wild and free outside
+    // of its current `if` statement.
     if (timestamp - lastFrameTimeMs < (1000 / maxFps)) {
       requestAnimationFrame(mainLoop);
       return;
     }
+    // Keep track of how long it has bee since the last main loop
     delta += timestamp - lastFrameTimeMs;
     lastFrameTimeMs = timestamp;
 
     processInput();
     var numUpdateSteps = 0;
+    // *note* in a death spiral the delta will grow larger and larger,
+    // meaning that the while loop will run longer and longer
     while (delta >= timestep) {
         update(timestep / slowMoLevel);
         delta -= timestep;
+        // Prevent the "spiral of death" in which
         if (++numUpdateSteps >= 240) {
+            // Since we're in a spiral our delta has been growing.
+            // We don't care about the unsimulated time at this point.  Shit's
+            // goin down, we need to just get the game back on track.
+            // Determinism SHMEterminism.
             delta = 0;
+            console.log("dsads");
             break;
         }
     }
     framesThisSecond++;
+    // Pass percentage difference for interpolation
     draw(delta / timestep);
     requestAnimationFrame(mainLoop);
   }
